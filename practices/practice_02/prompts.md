@@ -2,15 +2,18 @@
 
 Файл ведёт OpenCode по вашим запросам. Агент записывает фактические результаты экспериментов и вносит изменения в связанные файлы. Свою оценку сообщайте ему в чате; вручную заполнять шаблон не нужно.
 
-- Выбранный слабый артефакт Практики 1:
-- Что в нём нужно улучшить:
+- Выбранный слабый артефакт Практики 1: practices/practice_01/product_management.md
+- Что в нём нужно улучшить: конкретизировать Given/When/Then; отделить доказанные дефекты от потенциальных рисков/гипотез; фиксировать evidence (путь и координаты/фрагмент хунка diff); структурировать отчёт на «Описание», «Риски», «Проверки»; ограничить раздел «Риски» не более чем тремя пунктами.
 - Как поймём, что изменение полезно:
+  - сценарии в product_management.md становятся проверяемыми и несут evidence;
+  - синхронные записи в tests_e2e.md покрывают позитивный, негативный и граничный сценарии;
+  - Makefile Практики 2 проходит; диффы согласованы с TRAINING_PR.diff.
 
 | Техника | Файл эксперимента | Изменённый файл Практики 1 | Конкретное изменение | Проверка | Что отклонили |
 |---|---|---|---|---|---|
-| Few-shot | [`few_shot/experiment.md`](few_shot/experiment.md) |  |  |  |  |
-| R.C.T.F. | [`rctf/experiment.md`](rctf/experiment.md) |  |  |  |  |
-| Chain of Verification | [`chain_of_verification/experiment.md`](chain_of_verification/experiment.md) |  |  |  |  |
-| Tree of Thoughts | [`tree_of_thoughts/experiment.md`](tree_of_thoughts/experiment.md) |  |  |  |  |
-| RAG | [`rag/experiment.md`](rag/experiment.md) |  |  |  |  |
-| ReAct | [`react/experiment.md`](react/experiment.md) |  |  |  |  |
+| Few-shot | [`few_shot/experiment.md`](few_shot/experiment.md) | `practices/practice_01/product_management.md` | Внесены три Gherkin-сценария для помощника ревьюера PR по unified diff; отчёт включает «Описание», «Риски» (≤ 3 пункта), «Проверки»; evidence на хунк с путём и координатами/фрагментом; неизвестное отмечено как открытый вопрос | product_management.md и tests_e2e.md синхронизированы; make -C practices/practice_02 test → «Practice 2 artifacts: OK» | Отклонён прежний результат про авторизацию как не относящийся к артефакту и содержащий выдуманные требования |
+| R.C.T.F. | [`rctf/experiment.md`](rctf/experiment.md) | `practices/practice_01/product_management.md` | Уточнены сценарии: явное разделение AS IS/TO BE для негативного; в «Риски» ≤ 3 пункта с наиболее сильным evidence; неподтверждённые — в «Проверки» как предлагаемые проверки; evidence = путь + координаты хунка @@ -x,y +u,v @@ или точный фрагмент | make -C practices/practice_02 test → «Practice 2 artifacts: OK» | Отклонены: сообщение в «Описание» при отсутствии diff; «самые значимые» без критерия; добавление «Открытых вопросов»; утверждение о уже реализованной валидации unified diff |
+| Chain of Verification | [`chain_of_verification/experiment.md`](chain_of_verification/experiment.md) | `practices/practice_01/product_management.md` | Добавлен раздел «Статус проверки требований» после Gherkin (таблица статусов AS IS/TO BE/неподтверждено); tests_e2e.md без изменений | make -C practices/practice_02 test → «Practice 2 artifacts: OK» | Не выдавали контролируемую валидацию и проверку формата diff за реализованные функции |
+| Tree of Thoughts | [`tree_of_thoughts/experiment.md`](tree_of_thoughts/experiment.md) | `practices/practice_01/product_management.md` | Уточнено правило TO BE: фильтр достаточного evidence («путь + фрагмент» или «путь + координаты»); если ≤3 допущенных — включить все; если >3 — сортировка по силе evidence и top-3; file-only кандидаты → в «Проверки» | make -C practices/practice_02 test → «Practice 2 artifacts: OK» | Отклонены альтернативы Severity-first и Комбинированная; отклонена ссылка только на файл как evidence |
+| RAG | [`rag/experiment.md`](rag/experiment.md) | `practices/practice_01/product_management.md` | Уточнён «Статус проверки требований»: добавлены точные хунки TRAINING_PR.diff для AS IS; ссылки на разделы context.md для исходных требований; Evidence-first отмечен как решение TO BE; добавлен открытый вопрос про размер/усечение diff | make -C practices/practice_02 test → «Practice 2 artifacts: OK» | Отклонены выводы за пределами предоставленного diff; product_management.md/tests_e2e.md не трактуются как доказательство реализации |
+| ReAct | [`react/experiment.md`](react/experiment.md) | `practices/practice_01/product_management.md` | Синхронизировано Use case → поле «Ошибка или отказ» с негативным сценарием (AS IS/TO BE; неподтверждённые → «Проверки») | make step2 → Practice 2 artifacts: OK; финальный git diff --check девяти целевых файлов → без замечаний | Отклонены: вывод «git diff --check без замечаний» и «финальных правок не требуется» |
