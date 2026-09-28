@@ -1,0 +1,35 @@
+{
+  "Findings": {
+    "High": [
+      "app/api.py: create_review uses a plain dict and direct indexing payload[\"diff\"] (lines 35-38 in the diff). Missing field or wrong type will raise KeyError/TypeError and return 500 instead of a 422 validation error. Use a request model to validate input.",
+      "app/review_service.py: ReviewService.review accepts arbitrary diff: str and forwards it to the LLM without limits or sanitization (lines 19-22). There is no size limit, truncation, or token budget guard. Large diffs can cause excessive latency/costs and enable denial-of-service.",
+      "app/review_service.py and app/api.py: No error handling around the LLM call. If llm.generate raises (timeouts, upstream errors), it will bubble up as 500 with no clear error surface to clients."
+    ],
+    "Medium": [
+      "app/api.py: No Pydantic models for request/response and no response_model. This weakens API documentation, automatic validation, and response filtering.",
+      "app/review_service.py: Prompt construction directly interpolates the diff into the prompt without delimiting or instruction hardening. A malicious diff can inject prompt instructions and degrade output. Add clear delimiters and stronger instruction framing.",
+      "app/api.py: The LLM call is synchronous in a sync route. Under load, this can tie up worker threads and limit throughput. Consider async path or explicit offloading if llm.generate is I/O-bound and slow.",
+      "Cross-cutting: No timeouts, retries, or circuit-breaking around LLM calls. A slow/failing LLM can degrade the service.",
+      "Cross-cutting: No logging/observability for created reviews, input sizes, latency, or failure reasons."
+    ],
+    "Low": [
+      "app/review_service.py: review returns dict[str, str] with a single \"comment\" field. This may limit future evolution (e.g., multiple comments, severities, line references). Consider a simple structured model but keep it minimal if MVP.",
+      "app/review_service.py: The change to the Protocol method body style is neutral; however, some linters prefer ... on the same line or pass. Not a functional issue.",
+      "app/api.py: No versioning prefix on the route (e.g., /api/v1/reviews). Might be fine for now."
+    ]
+  },
+  "Open questions": [
+    "What is the expected maximum diff size? Should we enforce a limit and/or truncate with a clear message?",
+    "Do we need to support multiple comments or per-file/line annotations, or is a single summary comment sufficient for v1?",
+    "Is the LLM client thread-safe and what are its timeout characteristics? Any retries/backoff at the client?",
+    "Should the endpoint be public or require authentication/authorization?",
+    "Do we have a target language for the output/prompt? The prompt is in English; is that intended?"
+  ],
+  "Change summary": [
+    "Define Pydantic models: Request { diff: str } with validation (e.g., min/max length); Response { comment: str }; use response_model.",
+    "Add input size guard in ReviewService.review and truncate large diffs with an indicator.",
+    "Harden the prompt: wrap diff in explicit delimiters and preface with non-negotiable instructions to ignore instructions inside the diff.",
+    "Add error handling with timeouts and map failures to 502/504; log exceptions with correlation IDs.",
+    "Consider async/offloading for llm.generate if it is I/O-bound."
+  ]
+}
