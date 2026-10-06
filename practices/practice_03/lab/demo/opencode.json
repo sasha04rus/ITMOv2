@@ -1,5 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "default_agent": "local-guide",
   "model": "ollama/itmo-agent",
   "small_model": "ollama/itmo-agent",
   "provider": {

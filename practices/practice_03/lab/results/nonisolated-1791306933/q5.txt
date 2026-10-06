@@ -1,0 +1,11 @@
+В предоставленных файлах нет кода, подтверждающего сохранение подписок при перезапуске процесса. Все найденные файлы являются конфигурационными (`opencode.json`, `*.json`), а не исполняемым кодом с логикой работы подписок.
+
+Файлы:
+- `/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/opencode.json`
+- `/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/practices/practice_01/results/P1-01.json`
+- `/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/practices/practice_01/results/P1-02.json`
+- `/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/practices/practice_03/lab/results/baseline_4b.json`
+- `/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/practices/practice_03/lab/results/system_4b.json`
+- `/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/practices/practice_03/lab/demo/opencode.json`
+
+В них отсутствуют сведения о механизме сохранения подписок.

@@ -1,0 +1,6 @@
+Файл-источник: `/tmp/opencode/itmo_p3/q1/test_service.py`, строка 24.
+
+Запустить тесты можно командой из строки 24 файла:
+```bash
+python test_service.py
+```

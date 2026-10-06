@@ -1,0 +1,4 @@
+В функции `subscribe` в файле `/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/practices/practice_03/lab/demo/service.py`, строка 5–6:
+
+- Если имя подписчика (`name`) пустое (или содержит только пробелы), вызывается `ValueError` с сообщением `"empty name"`.
+- Подписка не состоится, имя не добавляется в `subscribers`.

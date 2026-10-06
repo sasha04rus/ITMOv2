@@ -1,0 +1,9 @@
+При пустом имени подписчика (`name = ""` или любом пробельном строке) будет поднят ошибкой:
+
+**Файл:** `/tmp/opencode/itmo_p3_iso_final/q2/service.py`, **строка 5-6**
+```python
+if not name.strip():
+    raise ValueError("empty name")
+```
+
+Если прислать пустое имя, функция `subscribe` выбросит исключение `ValueError` с сообщением `"empty name"`.
