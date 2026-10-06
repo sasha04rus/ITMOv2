@@ -1,0 +1,6 @@
+В файле `/tmp/opencode/itmo_p3_iso_final/q1/test_service.py` указан способ запуска тестов. Для этого файла тестов используется стандартный модуль `unittest`.
+
+Запуск команды в терминале:
+```bash
+python -m unittest test_service
+```

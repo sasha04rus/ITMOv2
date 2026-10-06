@@ -1,0 +1,11 @@
+Информацию о запуске тестов не найдено в файлах.
+
+**Найденные файлы (отсутствуют инструкции):**
+*   `/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/practices/practice_01/tests_unit.md` - описание unit-тестов (строки 1-15).
+*   `/mnt/c/users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/practices/practice_01/tests_integration.md` - описание integration-тестов (строки 1-15).
+*   `/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/practices/practice_03/lab/demo/test_persistence.py` - код Python-теста (строки 1-45), запускаемый через `unittest`.
+
+В этих файлах описывается **что** проверяется, но не указано, **как** запускать тесты (команды, окружение, инструменты). Обычно в учебных репозиториях для их запуска требуется:
+*   Фрагмент `.env` или `requirements.txt`.
+*   Скрипт на bash/python (`run_tests.sh`, `pytest.ini`).
+*   Конфигурация CI/CD или Makefile.
