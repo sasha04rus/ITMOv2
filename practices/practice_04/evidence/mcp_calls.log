@@ -1,0 +1,6 @@
+SUCCESS: {"jsonrpc": "2.0", "id": 1, "result": {"content": [{"type": "text", "text": "{\"ok\": true, \"name\": \"Alice\"}"}], "isError": false}}
+FAIL: {"jsonrpc": "2.0", "id": 2, "result": {"content": [{"type": "text", "text": "{\"ok\": false, \"error\": \"empty name is not allowed\"}"}], "isError": true}}
+SUCCESS: {"jsonrpc": "2.0", "id": 1, "result": {"content": [{"type": "text", "text": "{\"ok\": true, \"name\": \"Alice\"}"}], "isError": false}}
+FAIL: {"jsonrpc": "2.0", "id": 2, "result": {"content": [{"type": "text", "text": "{\"ok\": false, \"error\": \"empty name is not allowed\"}"}], "isError": true}}
+SUCCESS: {"jsonrpc": "2.0", "id": 1, "result": {"content": [{"type": "text", "text": "{\"ok\": true, \"name\": \"Alice\"}"}], "isError": false}}
+FAIL: {"jsonrpc": "2.0", "id": 2, "result": {"content": [{"type": "text", "text": "{\"ok\": false, \"error\": \"empty name is not allowed\"}"}], "isError": true}}
