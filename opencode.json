@@ -1,6 +1,14 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "default_agent": "build",
+  "instructions": [
+    "practices/practice_04/AGENTS.md"
+  ],
+  "skills": {
+    "paths": [
+      ".opencode/skills"
+    ]
+  },
   "provider": {
     "vsellm": {
       "npm": "@ai-sdk/openai-compatible",
@@ -18,5 +26,19 @@
         }
       }
     }
-  }
+  },
+  "mcp": {
+    "validate-subscriber-name": {
+      "type": "local",
+      "command": [
+        "python3",
+        "practices/practice_04/.opencode/mcp/validate_subscriber_name/server.py"
+      ],
+      "enabled": true,
+      "environment": {}
+    }
+  },
+  "plugin": [
+    ".opencode/plugins/auto-runner-plugin.js"
+  ]
 }
