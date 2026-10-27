@@ -1,0 +1,21 @@
+[
+  {
+    "command": [
+      "python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-v"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python",
+      "scripts/check_spec.py"
+    ],
+    "exit_code": 0
+  }
+]

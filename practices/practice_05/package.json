@@ -1,0 +1,10 @@
+{
+  "name": "practice-05-subscriber-search",
+  "private": true,
+  "scripts": {
+    "test:e2e": "node tests/e2e.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}

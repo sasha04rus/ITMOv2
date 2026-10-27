@@ -1,0 +1,1 @@
+{"FEATURE_DIR":"C:\\Users\\Sasha Tastakov\\OneDrive\\\u0420\u0430\u0431\u043e\u0447\u0438\u0439 \u0441\u0442\u043e\u043b\\\u0438\u0438\\ITMOv2\\.worktrees\\practice_05\\practices\\practice_05\\specs\\001-subscriber-search","AVAILABLE_DOCS":["contracts/","tasks.md"]}

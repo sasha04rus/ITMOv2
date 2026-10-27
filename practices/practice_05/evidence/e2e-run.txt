@@ -1,0 +1,11 @@
+PASS Initial list through real API
+PASS Latin search and server-side trim
+PASS Cyrillic search using Enter
+PASS No matches is an empty state
+PASS Reset restores all and input focus
+PASS Unicode boundary: 100 accepted, 101 rejected
+PASS Network failure and retry of last submitted query
+PASS Malformed success response is an error, retry recovers
+PASS Older response cannot replace newer search
+PASS API strings render as text
+PASS Mobile layout has no horizontal overflow

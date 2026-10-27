@@ -11,24 +11,24 @@
 
 ## Phase 2: Foundation
 
-- [ ] T004 Сохранить старые функции и добавить в app/service.py чистый поиск по контракту.
-- [ ] T005 Покрыть прежнее поведение и поиск в tests/test_service.py.
+- [x] T004 Сохранить старые функции и добавить в app/service.py чистый поиск по контракту.
+- [x] T005 Покрыть прежнее поведение и поиск в tests/test_service.py.
 
 ## Phase 3: User Story 1 — поиск (P1)
 
-- [ ] T006 [US1] Реализовать API, static routes и --demo в app/server.py.
-- [ ] T007 [US1] Проверить API и ошибки в tests/test_http.py.
-- [ ] T008 [P] [US1] Реализовать страницу, форму и выдачу в app/static/.
+- [x] T006 [US1] Реализовать API, static routes и --demo в app/server.py.
+- [x] T007 [US1] Проверить API и ошибки в tests/test_http.py.
+- [x] T008 [P] [US1] Реализовать страницу, форму и выдачу в app/static/.
 
 ## Phase 4: User Story 2 — состояния и восстановление (P1)
 
-- [ ] T009 [US2] Добавить loading/empty/error/retry/reset и защиту от старого ответа в app/static/app.js.
-- [ ] T010 [US2] Проверить полный браузерный путь, границу и ошибки в tests/e2e.cjs.
+- [x] T009 [US2] Добавить loading/empty/error/retry/reset и защиту от старого ответа в app/static/app.js.
+- [x] T010 [US2] Проверить полный браузерный путь, границу и ошибки в tests/e2e.cjs.
 
 ## Phase 5: Verification and Delivery
 
-- [ ] T011 Выполнить независимую проверку и сохранить ожидание → факт → доказательство.
-- [ ] T012 Оформить README.md, FRAMEWORK.md, reflection.md, фактические результаты и демо.
+- [x] T011 Выполнить независимую проверку и сохранить ожидание → факт → доказательство.
+- [x] T012 Оформить README.md, FRAMEWORK.md, reflection.md, фактические результаты и демо.
 
 ## Dependencies
 
