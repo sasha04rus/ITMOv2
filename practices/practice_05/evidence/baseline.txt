@@ -1,0 +1,8 @@
+test_list_sorted (test_service.TestSubscriptions.test_list_sorted) ... ok
+test_unsubscribe_empty_raises (test_service.TestSubscriptions.test_unsubscribe_empty_raises) ... ok
+test_unsubscribe_success_and_noop (test_service.TestSubscriptions.test_unsubscribe_success_and_noop) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.000s
+
+OK

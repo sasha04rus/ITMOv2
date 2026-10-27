@@ -1,0 +1,12 @@
+{
+  "date": "2026-10-26",
+  "source": "Direct user reply in this chat before implementation",
+  "question_summary": "Approve subscriber-search contract: case-insensitive substring, empty query returns all, limit 100, reset/retry, in-memory demo, no web CRUD",
+  "answer": "Утверждаю, реализуй",
+  "contract_sha256": "e274fd4be663ac2e5f0d5b504f583452122b66bb7359a4f9d2ff972b0f27aefc",
+  "before_sha256": {
+    "logic.md": "66a88d3df5b19e13802ee936d8d61afe71092ca1241fe878880c91d36463c8c9",
+    "ui.md": "86ad440c02ab71869d32d0902b3a58d7039ea1ba615f4b5612ac2314517a282c"
+  },
+  "baseline_exit_code": 0
+}
