@@ -1,0 +1,8 @@
+{
+  "framework": "GitHub Spec Kit",
+  "source": "https://github.com/github/spec-kit",
+  "commit": "9783b49ed66c26935cf7ef5ccc6ae5a296316eb7",
+  "source_version": "1.2.4.dev0",
+  "mode": "Official Python automation scripts and templates, copied unchanged; CLI installation is separate",
+  "date": "2026-10-26"
+}

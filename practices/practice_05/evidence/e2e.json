@@ -1,0 +1,84 @@
+{
+  "status": "passed",
+  "scenarios": [
+    {
+      "name": "Initial list through real API",
+      "kind": "end-to-end",
+      "status": "passed",
+      "duration_ms": 150,
+      "expected": "Four sorted demo subscribers",
+      "actual": [
+        "Alice",
+        "Bob",
+        "Анна",
+        "Борис"
+      ]
+    },
+    {
+      "name": "Latin search and server-side trim",
+      "kind": "end-to-end",
+      "status": "passed",
+      "duration_ms": 69
+    },
+    {
+      "name": "Cyrillic search using Enter",
+      "kind": "end-to-end",
+      "status": "passed",
+      "duration_ms": 27
+    },
+    {
+      "name": "No matches is an empty state",
+      "kind": "end-to-end",
+      "status": "passed",
+      "duration_ms": 55
+    },
+    {
+      "name": "Reset restores all and input focus",
+      "kind": "end-to-end",
+      "status": "passed",
+      "duration_ms": 51
+    },
+    {
+      "name": "Unicode boundary: 100 accepted, 101 rejected",
+      "kind": "end-to-end",
+      "status": "passed",
+      "duration_ms": 181
+    },
+    {
+      "name": "Network failure and retry of last submitted query",
+      "kind": "controlled-ui-failure",
+      "status": "passed",
+      "duration_ms": 113
+    },
+    {
+      "name": "Malformed success response is an error, retry recovers",
+      "kind": "controlled-ui-failure",
+      "status": "passed",
+      "duration_ms": 116
+    },
+    {
+      "name": "Older response cannot replace newer search",
+      "kind": "controlled-ui-race",
+      "status": "passed",
+      "duration_ms": 601
+    },
+    {
+      "name": "API strings render as text",
+      "kind": "controlled-ui-input",
+      "status": "passed",
+      "duration_ms": 50
+    },
+    {
+      "name": "Mobile layout has no horizontal overflow",
+      "kind": "browser-layout",
+      "status": "passed",
+      "duration_ms": 106,
+      "layout": {
+        "scrollWidth": 375,
+        "clientWidth": 375,
+        "viewportWidth": 390
+      }
+    }
+  ],
+  "browser": "156.0.4314.42"
+}

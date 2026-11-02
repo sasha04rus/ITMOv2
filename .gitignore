@@ -173,3 +173,7 @@ student_solutions/
 !.roo/
 !.specify/
 !.vscode/
+
+# Local tooling and intermediate evidence for practice 5
+/.venv-tools/
+/tmp/

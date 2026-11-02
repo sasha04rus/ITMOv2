@@ -1,0 +1,11 @@
+{
+  "source_ref": "codex/practice-04",
+  "source_commit": "f9b56a622a01f76df2a7cf7433bd457234c19287",
+  "sha256": {
+    "practices/practice_04/service/subscriptions/service.py": "86cb2768f0ab4cf6d6f9f129ea05ceb90549fa9a7cb53298a5666f0da20a69fc",
+    "practices/practice_04/service/subscriptions/tests/test_service.py": "ca695a93e97d0994357d44567fadcaad10c312c015cff1699bf6f7807fface2c"
+  },
+  "command": "python -m unittest discover -s practices/practice_04/service/subscriptions/tests -v",
+  "exit_code": 0,
+  "purpose": "Existing practice 4 behavior before search implementation"
+}

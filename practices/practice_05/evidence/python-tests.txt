@@ -1,0 +1,28 @@
+test_actual_port_url_and_explicit_demo_flag (test_http.CLIStartupTests.test_actual_port_url_and_explicit_demo_flag) ... ok
+test_api_returns_name_as_json_data (test_http.HTTPContractTests.test_api_returns_name_as_json_data) ... ok
+test_code_point_boundary_and_recovery (test_http.HTTPContractTests.test_code_point_boundary_and_recovery) ... ok
+test_empty_storage (test_http.HTTPContractTests.test_empty_storage) ... ok
+test_full_list_missing_and_empty_q (test_http.HTTPContractTests.test_full_list_missing_and_empty_q) ... ok
+test_search_utf8_and_normalized_query (test_http.HTTPContractTests.test_search_utf8_and_normalized_query) ... ok
+test_static_allowlist_and_content_types (test_http.HTTPContractTests.test_static_allowlist_and_content_types) ... ok
+test_unknown_duplicate_and_malformed_query (test_http.HTTPContractTests.test_unknown_duplicate_and_malformed_query) ... ok
+test_unknown_routes_and_traversal_not_served (test_http.HTTPContractTests.test_unknown_routes_and_traversal_not_served) ... ok
+test_unsupported_api_methods (test_http.HTTPContractTests.test_unsupported_api_methods) ... ok
+test_100_code_points_accepted_and_101_rejected (test_service.SearchTests.test_100_code_points_accepted_and_101_rejected) ... ok
+test_casefold_without_transliteration_or_accent_normalization (test_service.SearchTests.test_casefold_without_transliteration_or_accent_normalization) ... ok
+test_empty_and_whitespace_queries_return_all_sorted (test_service.SearchTests.test_empty_and_whitespace_queries_return_all_sorted) ... ok
+test_latin_and_cyrillic_substrings_ignore_case (test_service.SearchTests.test_latin_and_cyrillic_substrings_ignore_case) ... ok
+test_length_checked_after_strip_before_casefold (test_service.SearchTests.test_length_checked_after_strip_before_casefold) ... ok
+test_no_match_and_empty_storage_are_successful (test_service.SearchTests.test_no_match_and_empty_storage_are_successful) ... ok
+test_non_string_query_rejected (test_service.SearchTests.test_non_string_query_rejected) ... ok
+test_search_result_is_independent_and_storage_unchanged (test_service.SearchTests.test_search_result_is_independent_and_storage_unchanged) ... ok
+test_unicode_strip_matches_python_rules (test_service.SearchTests.test_unicode_strip_matches_python_rules) ... ok
+test_empty_names_raise (test_service.SubscriptionRegressionTests.test_empty_names_raise) ... ok
+test_list_sorted_and_independent (test_service.SubscriptionRegressionTests.test_list_sorted_and_independent) ... ok
+test_subscribe_trims_and_deduplicates_exact_names (test_service.SubscriptionRegressionTests.test_subscribe_trims_and_deduplicates_exact_names) ... ok
+test_unsubscribe_success_and_noop (test_service.SubscriptionRegressionTests.test_unsubscribe_success_and_noop) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 0.842s
+
+OK
