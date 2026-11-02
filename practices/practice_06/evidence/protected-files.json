@@ -1,0 +1,47 @@
+[
+  {
+    "file": "lab/sandbox.py",
+    "source_commit": "c675285",
+    "canonical_sha256": "dcd6b6630d3dec67e7185c1017e4999a3faa5998ff091419dade31b64132ddcf"
+  },
+  {
+    "file": "lab/test_service.py",
+    "source_commit": "c675285",
+    "canonical_sha256": "27da797ec3020be95316044dc9a17e5e99929b9d539d891e661dfdc26d4cecd3"
+  },
+  {
+    "file": "lab/test_http.py",
+    "source_commit": "c675285",
+    "canonical_sha256": "85876d78b4cb1cd3a9172ecf60a50c7e0341528756baab1bc7895b343acd2eab"
+  },
+  {
+    "file": "planner-system.txt",
+    "source_commit": "c675285",
+    "canonical_sha256": "02dc52e77bc5327e9dd41a8d44a0d08feff3534b37e8e0d4a5526dbc67638693"
+  },
+  {
+    "file": "lab/security_probe.py",
+    "source_commit": "70cce47",
+    "canonical_sha256": "600ab5c4374e78bdce2cf74c582619f5f0bab4be5d252ef91ff97f79c9dc764b"
+  },
+  {
+    "file": "lab/test_security.py",
+    "source_commit": "70cce47",
+    "canonical_sha256": "2c8899c6c45a530c63f3d2243f71a512d77dc627a34872fe9a86ee391d3c1be2"
+  },
+  {
+    "file": "lab/llm_probe.py",
+    "source_commit": "70cce47",
+    "canonical_sha256": "2e27990894c6c8e1c3ed2a8f6c0f052bfaa352b3c9347fb2ecb6a92f7472aedd"
+  },
+  {
+    "file": "opencode.json",
+    "source_commit": "70cce47",
+    "canonical_sha256": "c2e38a3b53de21b4434c389572206f6144c8940f8e27e5f2baf63d4d626ebff1"
+  },
+  {
+    "file": "judge-system-prompt.md",
+    "source_commit": "70cce47",
+    "canonical_sha256": "74164e7f4d2338eb07aaa9c8cd9c7f6204fab4a1aa4e87033661681d974dc5c9"
+  }
+]

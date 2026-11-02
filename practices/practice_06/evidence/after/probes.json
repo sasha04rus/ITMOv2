@@ -1,0 +1,1080 @@
+{
+  "phase": "after",
+  "transport": "real HTTP to subprocess",
+  "base": "http://127.0.0.1:45393",
+  "owned_server_pid": 486,
+  "fixture_root": "/tmp/itmo-practice-06-n737ytft",
+  "scope": "Only owned loopback process and disposable fixture",
+  "summary": {
+    "checks": 29,
+    "secure": 29,
+    "unsafe": 0
+  },
+  "results": [
+    {
+      "id": "S01",
+      "name": "anonymous profile",
+      "request": {
+        "method": "GET",
+        "path": "/profile?id=1",
+        "body": null,
+        "actor": "anonymous",
+        "extra_headers": {}
+      },
+      "status": 401,
+      "response": {
+        "error": "login required"
+      },
+      "secure_expected": "401",
+      "secure": true
+    },
+    {
+      "id": "S02",
+      "name": "foreign profile IDOR",
+      "request": {
+        "method": "GET",
+        "path": "/profile?id=2",
+        "body": null,
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 403,
+      "response": {
+        "error": "profile access denied"
+      },
+      "secure_expected": "403; no Bob data",
+      "secure": true
+    },
+    {
+      "id": "S03",
+      "name": "profile SQL injection",
+      "request": {
+        "method": "GET",
+        "path": "/profile?id=1+OR+1%3D1",
+        "body": null,
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 400,
+      "response": {
+        "error": "invalid id"
+      },
+      "secure_expected": "400",
+      "secure": true
+    },
+    {
+      "id": "S04",
+      "name": "search SQL injection",
+      "request": {
+        "method": "GET",
+        "path": "/search?q=%27+OR+1%3D1--",
+        "body": null,
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 200,
+      "response": [],
+      "secure_expected": "literal search or 400; no Bob data",
+      "secure": true
+    },
+    {
+      "id": "S05",
+      "name": "anonymous orders",
+      "request": {
+        "method": "GET",
+        "path": "/orders",
+        "body": null,
+        "actor": "anonymous",
+        "extra_headers": {}
+      },
+      "status": 401,
+      "response": {
+        "error": "login required"
+      },
+      "secure_expected": "401",
+      "secure": true
+    },
+    {
+      "id": "S06",
+      "name": "orders owner isolation",
+      "request": {
+        "method": "GET",
+        "path": "/orders",
+        "body": null,
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 200,
+      "response": [
+        {
+          "id": 1,
+          "owner": 1,
+          "product": "chair",
+          "price": 5000.0
+        }
+      ],
+      "secure_expected": "200; all orders owned by Alice",
+      "secure": true
+    },
+    {
+      "id": "S07",
+      "name": "spoofed staff header",
+      "request": {
+        "method": "GET",
+        "path": "/admin/export",
+        "body": null,
+        "actor": "alice",
+        "extra_headers": {
+          "X-Role": "staff"
+        }
+      },
+      "status": 403,
+      "response": {
+        "error": "staff only"
+      },
+      "secure_expected": "403",
+      "secure": true
+    },
+    {
+      "id": "S08",
+      "name": "anonymous staff spoof",
+      "request": {
+        "method": "GET",
+        "path": "/admin/export",
+        "body": null,
+        "actor": "anonymous",
+        "extra_headers": {
+          "X-Role": "staff"
+        }
+      },
+      "status": 401,
+      "response": {
+        "error": "login required"
+      },
+      "secure_expected": "401",
+      "secure": true
+    },
+    {
+      "id": "S09",
+      "name": "price tampering",
+      "request": {
+        "method": "POST",
+        "path": "/orders",
+        "body": {
+          "product": "chair",
+          "price": -1
+        },
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 201,
+      "response": {
+        "id": 3,
+        "owner": 1,
+        "product": "chair",
+        "price": 5000
+      },
+      "secure_expected": "reject or use catalog price 5000",
+      "secure": true
+    },
+    {
+      "id": "S10",
+      "name": "foreign receipt",
+      "request": {
+        "method": "GET",
+        "path": "/files?user=bob&path=receipt.txt",
+        "body": null,
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 403,
+      "response": {
+        "error": "file access denied"
+      },
+      "secure_expected": "403",
+      "secure": true
+    },
+    {
+      "id": "S11",
+      "name": "private file traversal inside fixture",
+      "request": {
+        "method": "GET",
+        "path": "/files?user=alice&path=..%2F..%2Fprivate%2Foperator-note.txt",
+        "body": null,
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 403,
+      "response": {
+        "error": "file access denied"
+      },
+      "secure_expected": "403; no operator secret",
+      "secure": true
+    },
+    {
+      "id": "S12",
+      "name": "foreign assistant order",
+      "request": {
+        "method": "GET",
+        "path": "/assistant/context?order_id=2",
+        "body": null,
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 403,
+      "response": {
+        "error": "order access denied"
+      },
+      "secure_expected": "403",
+      "secure": true
+    },
+    {
+      "id": "S13",
+      "name": "assistant context SQL injection",
+      "request": {
+        "method": "GET",
+        "path": "/assistant/context?order_id=1+OR+1%3D1",
+        "body": null,
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 400,
+      "response": {
+        "error": "invalid id"
+      },
+      "secure_expected": "400",
+      "secure": true
+    },
+    {
+      "id": "S14",
+      "name": "anonymous assistant file",
+      "request": {
+        "method": "POST",
+        "path": "/assistant/execute",
+        "body": {
+          "decision": {
+            "tool": "read_file",
+            "arguments": {
+              "path": "files/alice/receipt.txt"
+            }
+          }
+        },
+        "actor": "anonymous",
+        "extra_headers": {}
+      },
+      "status": 401,
+      "response": {
+        "error": "login required"
+      },
+      "secure_expected": "401",
+      "secure": true
+    },
+    {
+      "id": "S15",
+      "name": "assistant private file",
+      "request": {
+        "method": "POST",
+        "path": "/assistant/execute",
+        "body": {
+          "decision": {
+            "tool": "read_file",
+            "arguments": {
+              "path": "private/operator-note.txt"
+            }
+          }
+        },
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 403,
+      "response": {
+        "error": "file access denied"
+      },
+      "secure_expected": "403",
+      "secure": true
+    },
+    {
+      "id": "S16",
+      "name": "assistant profile export",
+      "request": {
+        "method": "POST",
+        "path": "/assistant/execute",
+        "body": {
+          "decision": {
+            "tool": "export_profiles",
+            "arguments": {}
+          }
+        },
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 403,
+      "response": {
+        "error": "tool not permitted"
+      },
+      "secure_expected": "403",
+      "secure": true
+    },
+    {
+      "id": "S17",
+      "name": "anonymous logs",
+      "request": {
+        "method": "GET",
+        "path": "/debug/logs",
+        "body": null,
+        "actor": "anonymous",
+        "extra_headers": {}
+      },
+      "status": 401,
+      "response": {
+        "error": "login required"
+      },
+      "secure_expected": "401",
+      "secure": true
+    },
+    {
+      "id": "S18",
+      "name": "customer logs",
+      "request": {
+        "method": "GET",
+        "path": "/debug/logs",
+        "body": null,
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 403,
+      "response": {
+        "error": "staff only"
+      },
+      "secure_expected": "403",
+      "secure": true
+    },
+    {
+      "id": "S19",
+      "name": "stored active HTML",
+      "request": {
+        "method": "POST",
+        "path": "/reviews",
+        "body": {
+          "product": "chair",
+          "text": "<script>window.__miniShopXss = 1</script>"
+        },
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 201,
+      "response": {
+        "saved": true
+      },
+      "secure_expected": "201",
+      "secure": true
+    },
+    {
+      "id": "S20",
+      "name": "stored XSS rendering",
+      "request": {
+        "method": "GET",
+        "path": "/reviews/view",
+        "body": null,
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 200,
+      "response": "<html><body><p>&lt;script&gt;window.__miniShopXss = 1&lt;/script&gt;</p></body></html>",
+      "secure_expected": "escaped script, no active script",
+      "secure": true
+    },
+    {
+      "id": "S21",
+      "name": "JSON array body",
+      "request": {
+        "method": "POST",
+        "path": "/login",
+        "body": "[]",
+        "actor": "anonymous",
+        "extra_headers": {}
+      },
+      "status": 400,
+      "response": {
+        "error": "JSON object required"
+      },
+      "secure_expected": "400; no internal exception",
+      "secure": true
+    },
+    {
+      "id": "S22",
+      "name": "malformed JSON",
+      "request": {
+        "method": "POST",
+        "path": "/login",
+        "body": "{",
+        "actor": "anonymous",
+        "extra_headers": {}
+      },
+      "status": 400,
+      "response": {
+        "error": "invalid JSON request"
+      },
+      "secure_expected": "400",
+      "secure": true
+    },
+    {
+      "id": "S23",
+      "name": "missing product",
+      "request": {
+        "method": "POST",
+        "path": "/orders",
+        "body": {},
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 400,
+      "response": {
+        "error": "string required"
+      },
+      "secure_expected": "400",
+      "secure": true
+    },
+    {
+      "id": "S24",
+      "name": "malformed decision",
+      "request": {
+        "method": "POST",
+        "path": "/assistant/execute",
+        "body": {
+          "decision": "not an object"
+        },
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 400,
+      "response": {
+        "error": "decision object required"
+      },
+      "secure_expected": "400",
+      "secure": true
+    },
+    {
+      "id": "S25",
+      "name": "staff logs contain no credentials",
+      "request": {
+        "method": "GET",
+        "path": "/debug/logs",
+        "body": null,
+        "actor": "staff",
+        "extra_headers": {}
+      },
+      "status": 200,
+      "response": [
+        {
+          "method": "POST",
+          "path": "/login",
+          "actor": null,
+          "status": 200
+        },
+        {
+          "method": "POST",
+          "path": "/login",
+          "actor": null,
+          "status": 200
+        },
+        {
+          "method": "POST",
+          "path": "/login",
+          "actor": null,
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/profile",
+          "actor": null,
+          "status": 401
+        },
+        {
+          "method": "GET",
+          "path": "/profile",
+          "actor": 1,
+          "status": 403
+        },
+        {
+          "method": "GET",
+          "path": "/profile",
+          "actor": 1,
+          "status": 400
+        },
+        {
+          "method": "GET",
+          "path": "/search",
+          "actor": 1,
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/orders",
+          "actor": null,
+          "status": 401
+        },
+        {
+          "method": "GET",
+          "path": "/orders",
+          "actor": 1,
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "path": "/admin/export",
+          "actor": 1,
+          "status": 403
+        },
+        {
+          "method": "GET",
+          "path": "/admin/export",
+          "actor": null,
+          "status": 401
+        },
+        {
+          "method": "POST",
+          "path": "/orders",
+          "actor": 1,
+          "status": 201
+        },
+        {
+          "method": "GET",
+          "path": "/files",
+          "actor": 1,
+          "status": 403
+        },
+        {
+          "method": "GET",
+          "path": "/files",
+          "actor": 1,
+          "status": 403
+        },
+        {
+          "method": "GET",
+          "path": "/assistant/context",
+          "actor": 1,
+          "status": 403
+        },
+        {
+          "method": "GET",
+          "path": "/assistant/context",
+          "actor": 1,
+          "status": 400
+        },
+        {
+          "method": "POST",
+          "path": "/assistant/execute",
+          "actor": null,
+          "status": 401
+        },
+        {
+          "method": "POST",
+          "path": "/assistant/execute",
+          "actor": 1,
+          "status": 403
+        },
+        {
+          "method": "POST",
+          "path": "/assistant/execute",
+          "actor": 1,
+          "status": 403
+        },
+        {
+          "method": "GET",
+          "path": "/debug/logs",
+          "actor": null,
+          "status": 401
+        },
+        {
+          "method": "GET",
+          "path": "/debug/logs",
+          "actor": 1,
+          "status": 403
+        },
+        {
+          "method": "POST",
+          "path": "/reviews",
+          "actor": 1,
+          "status": 201
+        },
+        {
+          "method": "GET",
+          "path": "/reviews/view",
+          "actor": 1,
+          "status": 200
+        },
+        {
+          "method": "POST",
+          "path": "/orders",
+          "actor": 1,
+          "status": 400
+        },
+        {
+          "method": "POST",
+          "path": "/assistant/execute",
+          "actor": 1,
+          "status": 400
+        }
+      ],
+      "secure_expected": "200; no passwords or session tokens",
+      "secure": true
+    },
+    {
+      "id": "S26",
+      "name": "missing receipt does not expose internal error",
+      "request": {
+        "method": "GET",
+        "path": "/files?user=alice&path=missing.txt",
+        "body": null,
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 403,
+      "response": {
+        "error": "file access denied"
+      },
+      "secure_expected": "403 or 404, not 500",
+      "secure": true
+    },
+    {
+      "id": "S27",
+      "name": "bounded review storage",
+      "secure_expected": "429 after finite capacity <=129",
+      "statuses": [
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429
+      ],
+      "secure": true
+    },
+    {
+      "id": "S28",
+      "name": "bounded sessions",
+      "secure_expected": "429 before 260 new sessions",
+      "statuses": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429,
+        429
+      ],
+      "secure": true
+    },
+    {
+      "id": "S29",
+      "name": "forced fixture deletion",
+      "request": {
+        "method": "POST",
+        "path": "/assistant/execute",
+        "body": {
+          "decision": {
+            "tool": "delete_tree",
+            "arguments": {
+              "path": "."
+            }
+          }
+        },
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 403,
+      "response": {
+        "error": "tool not permitted"
+      },
+      "secure_expected": "403 and original files retained",
+      "secure": true,
+      "files_before": [
+        "files/alice/receipt.txt",
+        "files/bob/receipt.txt",
+        "private/operator-note.txt"
+      ],
+      "files_after": [
+        "files/alice/receipt.txt",
+        "files/bob/receipt.txt",
+        "private/operator-note.txt"
+      ]
+    }
+  ]
+}

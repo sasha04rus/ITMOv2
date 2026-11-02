@@ -1,0 +1,8 @@
+test_expiry_is_checked_at_request_entry_with_monotonic_clock (test_judge_claims.JudgeClaimsTest.test_expiry_is_checked_at_request_entry_with_monotonic_clock) ... ok
+test_nested_entities_and_quotes_remain_text_with_csp (test_judge_claims.JudgeClaimsTest.test_nested_entities_and_quotes_remain_text_with_csp) ... ok
+test_truncated_valid_json_body_is_rejected_before_execution (test_judge_claims.JudgeClaimsTest.test_truncated_valid_json_body_is_rejected_before_execution) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.335s
+
+OK

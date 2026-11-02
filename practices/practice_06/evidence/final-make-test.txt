@@ -1,0 +1,55 @@
+make: Entering directory '/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06'
+Practice 1 artifacts: OK
+Practice 2 artifacts: OK
+Standard library only: ready
+test_duplicate (test_service.SubscribeTest.test_duplicate) ... ok
+test_empty (test_service.SubscribeTest.test_empty) ... ok
+test_subscribe (test_service.SubscribeTest.test_subscribe) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.004s
+
+OK
+Standard library only: ready
+test_health_and_not_found (test_http.HttpTest.test_health_and_not_found) ... ok
+test_login_and_purchase_over_http (test_http.HttpTest.test_login_and_purchase_over_http) ... ok
+test_transport_only_binds_loopback (test_http.HttpTest.test_transport_only_binds_loopback) ... ok
+test_expiry_is_checked_at_request_entry_with_monotonic_clock (test_judge_claims.JudgeClaimsTest.test_expiry_is_checked_at_request_entry_with_monotonic_clock) ... ok
+test_nested_entities_and_quotes_remain_text_with_csp (test_judge_claims.JudgeClaimsTest.test_nested_entities_and_quotes_remain_text_with_csp) ... ok
+test_truncated_valid_json_body_is_rejected_before_execution (test_judge_claims.JudgeClaimsTest.test_truncated_valid_json_body_is_rejected_before_execution) ... ok
+test_anonymous_private_routes_require_session (test_security.SecurityTest.test_anonymous_private_routes_require_session) ... ok
+test_assistant_has_only_authorized_receipt_tool (test_security.SecurityTest.test_assistant_has_only_authorized_receipt_tool) ... ok
+test_assistant_order_owner (test_security.SecurityTest.test_assistant_order_owner) ... ok
+test_catalog_price_is_authoritative (test_security.SecurityTest.test_catalog_price_is_authoritative) ... ok
+test_client_workflow_and_refusal_survive_hardening (test_security.SecurityTest.test_client_workflow_and_refusal_survive_hardening) ... ok
+test_forced_delete_does_not_change_fixture (test_security.SecurityTest.test_forced_delete_does_not_change_fixture) ... ok
+test_invalid_json_returns_client_error_without_details (test_security.SecurityTest.test_invalid_json_returns_client_error_without_details) ... ok
+test_invalid_shapes_and_fields_are_not_500 (test_security.SecurityTest.test_invalid_shapes_and_fields_are_not_500) ... ok
+test_logs_privilege_and_secret_redaction (test_security.SecurityTest.test_logs_privilege_and_secret_redaction) ... ok
+test_orders_owner (test_security.SecurityTest.test_orders_owner) ... ok
+test_profile_owner (test_security.SecurityTest.test_profile_owner) ... ok
+test_receipt_authorization_and_internal_paths (test_security.SecurityTest.test_receipt_authorization_and_internal_paths) ... ok
+test_review_html_is_escaped (test_security.SecurityTest.test_review_html_is_escaped) ... ok
+test_search_customer_sees_only_self (test_security.SecurityTest.test_search_customer_sees_only_self) ... ok
+test_search_parameterized_even_for_staff (test_security.SecurityTest.test_search_parameterized_even_for_staff) ... ok
+test_sql_injection_ids_rejected (test_security.SecurityTest.test_sql_injection_ids_rejected) ... ok
+test_staff_privilege_comes_only_from_session (test_security.SecurityTest.test_staff_privilege_comes_only_from_session) ... ok
+test_delete_of_fixture_root_stays_inside_exercise (test_service.SandboxTest.test_delete_of_fixture_root_stays_inside_exercise) ... ok
+test_external_directory_cannot_be_deleted (test_service.SandboxTest.test_external_directory_cannot_be_deleted) ... ok
+test_parent_paths_cannot_escape_exercise (test_service.SandboxTest.test_parent_paths_cannot_escape_exercise) ... ok
+test_symlink_cannot_escape_exercise (test_service.SandboxTest.test_symlink_cannot_escape_exercise) ... ok
+test_assistant_can_return_own_receipt (test_service.ShopTest.test_assistant_can_return_own_receipt) ... ok
+test_customer_can_buy_at_catalog_price (test_service.ShopTest.test_customer_can_buy_at_catalog_price) ... ok
+test_health_and_catalog (test_service.ShopTest.test_health_and_catalog) ... ok
+test_own_profile_and_receipt (test_service.ShopTest.test_own_profile_and_receipt) ... ok
+test_review_can_be_submitted_and_viewed (test_service.ShopTest.test_review_can_be_submitted_and_viewed) ... ok
+test_staff_can_export_with_staff_session (test_service.ShopTest.test_staff_can_export_with_staff_session) ... ok
+test_tokens_identify_distinct_users (test_service.ShopTest.test_tokens_identify_distinct_users) ... ok
+test_unknown_product_rejected (test_service.ShopTest.test_unknown_product_rejected) ... ok
+test_wrong_password_rejected (test_service.ShopTest.test_wrong_password_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 36 tests in 3.313s
+
+OK
+make: Leaving directory '/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06'

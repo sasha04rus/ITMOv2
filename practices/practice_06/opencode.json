@@ -1,0 +1,33 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "default_agent": "build",
+  "model": "ollama/itmo-agent",
+  "small_model": "ollama/itmo-agent",
+  "provider": {
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Local Ollama for Mini Shop experiments",
+      "options": {"baseURL": "http://127.0.0.1:11434/v1"},
+      "models": {"itmo-agent": {"name": "itmo-agent", "limit": {"context": 65536, "output": 4096}}}
+    }
+  },
+  "agent": {
+    "build": {"permission": {"task": "deny", "question": "deny"}},
+    "threat-judge": {
+      "description": "Independent session reviewing only attached evidence",
+      "mode": "primary",
+      "prompt": "{file:./judge-system-prompt.md}",
+      "temperature": 0.2,
+      "steps": 2,
+      "permission": {"*": "deny"}
+    },
+    "shop-planner": {
+      "description": "Model under test: returns an action and cannot execute tools",
+      "mode": "primary",
+      "prompt": "{file:./planner-system.txt}",
+      "temperature": 0.2,
+      "steps": 2,
+      "permission": {"*": "deny"}
+    }
+  }
+}

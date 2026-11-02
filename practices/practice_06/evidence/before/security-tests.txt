@@ -1,0 +1,402 @@
+test_anonymous_private_routes_require_session (test_security.SecurityTest.test_anonymous_private_routes_require_session) ... 
+  test_anonymous_private_routes_require_session (test_security.SecurityTest.test_anonymous_private_routes_require_session) (path='/profile?id=1') ... FAIL
+  test_anonymous_private_routes_require_session (test_security.SecurityTest.test_anonymous_private_routes_require_session) (path='/search?q=TEST') ... FAIL
+  test_anonymous_private_routes_require_session (test_security.SecurityTest.test_anonymous_private_routes_require_session) (path='/orders') ... FAIL
+  test_anonymous_private_routes_require_session (test_security.SecurityTest.test_anonymous_private_routes_require_session) (path='/files') ... FAIL
+  test_anonymous_private_routes_require_session (test_security.SecurityTest.test_anonymous_private_routes_require_session) (path='/debug/logs') ... FAIL
+  test_anonymous_private_routes_require_session (test_security.SecurityTest.test_anonymous_private_routes_require_session) (path='/assistant/context') ... FAIL
+test_assistant_has_only_authorized_receipt_tool (test_security.SecurityTest.test_assistant_has_only_authorized_receipt_tool) ... 
+  test_assistant_has_only_authorized_receipt_tool (test_security.SecurityTest.test_assistant_has_only_authorized_receipt_tool) (decision={'tool': 'export_profiles', 'arguments': {}}) ... FAIL
+  test_assistant_has_only_authorized_receipt_tool (test_security.SecurityTest.test_assistant_has_only_authorized_receipt_tool) (decision={'tool': 'read_file', 'arguments': {'path': 'files/bob/receipt.txt'}}) ... FAIL
+  test_assistant_has_only_authorized_receipt_tool (test_security.SecurityTest.test_assistant_has_only_authorized_receipt_tool) (decision={'tool': 'read_file', 'arguments': {'path': 'private/operator-note.txt'}}) ... FAIL
+  test_assistant_has_only_authorized_receipt_tool (test_security.SecurityTest.test_assistant_has_only_authorized_receipt_tool) (decision={'tool': 'read_file', 'arguments': {'path': 'files/alice/../../private/operator-note.txt'}}) ... FAIL
+test_assistant_order_owner (test_security.SecurityTest.test_assistant_order_owner) ... FAIL
+test_catalog_price_is_authoritative (test_security.SecurityTest.test_catalog_price_is_authoritative) ... FAIL
+test_client_workflow_and_refusal_survive_hardening (test_security.SecurityTest.test_client_workflow_and_refusal_survive_hardening) ... FAIL
+test_forced_delete_does_not_change_fixture (test_security.SecurityTest.test_forced_delete_does_not_change_fixture) ... FAIL
+test_invalid_json_returns_client_error_without_details (test_security.SecurityTest.test_invalid_json_returns_client_error_without_details) ... 
+  test_invalid_json_returns_client_error_without_details (test_security.SecurityTest.test_invalid_json_returns_client_error_without_details) (raw=b'{') ... FAIL
+  test_invalid_json_returns_client_error_without_details (test_security.SecurityTest.test_invalid_json_returns_client_error_without_details) (raw=b'[]') ... FAIL
+  test_invalid_json_returns_client_error_without_details (test_security.SecurityTest.test_invalid_json_returns_client_error_without_details) (raw=b'null') ... FAIL
+  test_invalid_json_returns_client_error_without_details (test_security.SecurityTest.test_invalid_json_returns_client_error_without_details) (raw=b'42') ... FAIL
+  test_invalid_json_returns_client_error_without_details (test_security.SecurityTest.test_invalid_json_returns_client_error_without_details) (raw=b'{"username": NaN}') ... FAIL
+test_invalid_shapes_and_fields_are_not_500 (test_security.SecurityTest.test_invalid_shapes_and_fields_are_not_500) ... 
+  test_invalid_shapes_and_fields_are_not_500 (test_security.SecurityTest.test_invalid_shapes_and_fields_are_not_500) (path='/orders', body={}) ... FAIL
+  test_invalid_shapes_and_fields_are_not_500 (test_security.SecurityTest.test_invalid_shapes_and_fields_are_not_500) (path='/orders', body={'product': []}) ... FAIL
+  test_invalid_shapes_and_fields_are_not_500 (test_security.SecurityTest.test_invalid_shapes_and_fields_are_not_500) (path='/reviews', body={'product': 'chair', 'text': []}) ... FAIL
+  test_invalid_shapes_and_fields_are_not_500 (test_security.SecurityTest.test_invalid_shapes_and_fields_are_not_500) (path='/assistant/execute', body={'decision': 'bad'}) ... FAIL
+  test_invalid_shapes_and_fields_are_not_500 (test_security.SecurityTest.test_invalid_shapes_and_fields_are_not_500) (path='/assistant/execute', body={'decision': {'tool': 'read_file', 'arguments': []}}) ... FAIL
+test_logs_privilege_and_secret_redaction (test_security.SecurityTest.test_logs_privilege_and_secret_redaction) ... FAIL
+test_orders_owner (test_security.SecurityTest.test_orders_owner) ... FAIL
+test_profile_owner (test_security.SecurityTest.test_profile_owner) ... FAIL
+test_receipt_authorization_and_internal_paths (test_security.SecurityTest.test_receipt_authorization_and_internal_paths) ... 
+  test_receipt_authorization_and_internal_paths (test_security.SecurityTest.test_receipt_authorization_and_internal_paths) (path='/files?user=bob&path=receipt.txt') ... FAIL
+  test_receipt_authorization_and_internal_paths (test_security.SecurityTest.test_receipt_authorization_and_internal_paths) (path='/files?user=alice&path=..%2F..%2Fprivate%2Foperator-note.txt') ... FAIL
+  test_receipt_authorization_and_internal_paths (test_security.SecurityTest.test_receipt_authorization_and_internal_paths) (path='/files?user=..%2Fbob&path=receipt.txt') ... FAIL
+test_receipt_authorization_and_internal_paths (test_security.SecurityTest.test_receipt_authorization_and_internal_paths) ... FAIL
+test_review_html_is_escaped (test_security.SecurityTest.test_review_html_is_escaped) ... FAIL
+test_search_customer_sees_only_self (test_security.SecurityTest.test_search_customer_sees_only_self) ... FAIL
+test_search_parameterized_even_for_staff (test_security.SecurityTest.test_search_parameterized_even_for_staff) ... FAIL
+test_sql_injection_ids_rejected (test_security.SecurityTest.test_sql_injection_ids_rejected) ... 
+  test_sql_injection_ids_rejected (test_security.SecurityTest.test_sql_injection_ids_rejected) (path='/profile') ... FAIL
+  test_sql_injection_ids_rejected (test_security.SecurityTest.test_sql_injection_ids_rejected) (path='/assistant/context') ... FAIL
+test_staff_privilege_comes_only_from_session (test_security.SecurityTest.test_staff_privilege_comes_only_from_session) ... FAIL
+
+======================================================================
+FAIL: test_anonymous_private_routes_require_session (test_security.SecurityTest.test_anonymous_private_routes_require_session) (path='/profile?id=1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 22, in test_anonymous_private_routes_require_session
+    self.assertEqual(self.call('GET', path, user=None)[0], 401)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 200 != 401
+
+======================================================================
+FAIL: test_anonymous_private_routes_require_session (test_security.SecurityTest.test_anonymous_private_routes_require_session) (path='/search?q=TEST')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 22, in test_anonymous_private_routes_require_session
+    self.assertEqual(self.call('GET', path, user=None)[0], 401)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 200 != 401
+
+======================================================================
+FAIL: test_anonymous_private_routes_require_session (test_security.SecurityTest.test_anonymous_private_routes_require_session) (path='/orders')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 22, in test_anonymous_private_routes_require_session
+    self.assertEqual(self.call('GET', path, user=None)[0], 401)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 200 != 401
+
+======================================================================
+FAIL: test_anonymous_private_routes_require_session (test_security.SecurityTest.test_anonymous_private_routes_require_session) (path='/files')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 22, in test_anonymous_private_routes_require_session
+    self.assertEqual(self.call('GET', path, user=None)[0], 401)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 200 != 401
+
+======================================================================
+FAIL: test_anonymous_private_routes_require_session (test_security.SecurityTest.test_anonymous_private_routes_require_session) (path='/debug/logs')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 22, in test_anonymous_private_routes_require_session
+    self.assertEqual(self.call('GET', path, user=None)[0], 401)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 200 != 401
+
+======================================================================
+FAIL: test_anonymous_private_routes_require_session (test_security.SecurityTest.test_anonymous_private_routes_require_session) (path='/assistant/context')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 22, in test_anonymous_private_routes_require_session
+    self.assertEqual(self.call('GET', path, user=None)[0], 401)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 200 != 401
+
+======================================================================
+FAIL: test_assistant_has_only_authorized_receipt_tool (test_security.SecurityTest.test_assistant_has_only_authorized_receipt_tool) (decision={'tool': 'export_profiles', 'arguments': {}})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 81, in test_assistant_has_only_authorized_receipt_tool
+    self.assertEqual(self.call('POST', '/assistant/execute', {'decision': decision})[0], 403)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 200 != 403
+
+======================================================================
+FAIL: test_assistant_has_only_authorized_receipt_tool (test_security.SecurityTest.test_assistant_has_only_authorized_receipt_tool) (decision={'tool': 'read_file', 'arguments': {'path': 'files/bob/receipt.txt'}})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 81, in test_assistant_has_only_authorized_receipt_tool
+    self.assertEqual(self.call('POST', '/assistant/execute', {'decision': decision})[0], 403)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 200 != 403
+
+======================================================================
+FAIL: test_assistant_has_only_authorized_receipt_tool (test_security.SecurityTest.test_assistant_has_only_authorized_receipt_tool) (decision={'tool': 'read_file', 'arguments': {'path': 'private/operator-note.txt'}})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 81, in test_assistant_has_only_authorized_receipt_tool
+    self.assertEqual(self.call('POST', '/assistant/execute', {'decision': decision})[0], 403)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 200 != 403
+
+======================================================================
+FAIL: test_assistant_has_only_authorized_receipt_tool (test_security.SecurityTest.test_assistant_has_only_authorized_receipt_tool) (decision={'tool': 'read_file', 'arguments': {'path': 'files/alice/../../private/operator-note.txt'}})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 81, in test_assistant_has_only_authorized_receipt_tool
+    self.assertEqual(self.call('POST', '/assistant/execute', {'decision': decision})[0], 403)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 200 != 403
+
+======================================================================
+FAIL: test_assistant_order_owner (test_security.SecurityTest.test_assistant_order_owner)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 71, in test_assistant_order_owner
+    self.assertEqual(self.call('GET', '/assistant/context?order_id=2')[0], 403)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 200 != 403
+
+======================================================================
+FAIL: test_catalog_price_is_authoritative (test_security.SecurityTest.test_catalog_price_is_authoritative)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 58, in test_catalog_price_is_authoritative
+    self.assertEqual(order['price'], 5000)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: -100 != 5000
+
+======================================================================
+FAIL: test_client_workflow_and_refusal_survive_hardening (test_security.SecurityTest.test_client_workflow_and_refusal_survive_hardening)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 126, in test_client_workflow_and_refusal_survive_hardening
+    self.assertEqual(self.call('POST', '/assistant/execute', {'decision': {'tool': 'refuse', 'arguments': {'reason': 'untrusted review'}}})[0], 200)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 400 != 200
+
+======================================================================
+FAIL: test_forced_delete_does_not_change_fixture (test_security.SecurityTest.test_forced_delete_does_not_change_fixture)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 86, in test_forced_delete_does_not_change_fixture
+    self.assertEqual(status, 403)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 200 != 403
+
+======================================================================
+FAIL: test_invalid_json_returns_client_error_without_details (test_security.SecurityTest.test_invalid_json_returns_client_error_without_details) (raw=b'{')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 108, in test_invalid_json_returns_client_error_without_details
+    self.assertEqual(status, 400)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 500 != 400
+
+======================================================================
+FAIL: test_invalid_json_returns_client_error_without_details (test_security.SecurityTest.test_invalid_json_returns_client_error_without_details) (raw=b'[]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 108, in test_invalid_json_returns_client_error_without_details
+    self.assertEqual(status, 400)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 500 != 400
+
+======================================================================
+FAIL: test_invalid_json_returns_client_error_without_details (test_security.SecurityTest.test_invalid_json_returns_client_error_without_details) (raw=b'null')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 108, in test_invalid_json_returns_client_error_without_details
+    self.assertEqual(status, 400)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 500 != 400
+
+======================================================================
+FAIL: test_invalid_json_returns_client_error_without_details (test_security.SecurityTest.test_invalid_json_returns_client_error_without_details) (raw=b'42')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 108, in test_invalid_json_returns_client_error_without_details
+    self.assertEqual(status, 400)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 500 != 400
+
+======================================================================
+FAIL: test_invalid_json_returns_client_error_without_details (test_security.SecurityTest.test_invalid_json_returns_client_error_without_details) (raw=b'{"username": NaN}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 108, in test_invalid_json_returns_client_error_without_details
+    self.assertEqual(status, 400)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+AssertionError: 401 != 400
+
+======================================================================
+FAIL: test_invalid_shapes_and_fields_are_not_500 (test_security.SecurityTest.test_invalid_shapes_and_fields_are_not_500) (path='/orders', body={})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 118, in test_invalid_shapes_and_fields_are_not_500
+    self.assertEqual(self.call('POST', path, body)[0], 400)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 500 != 400
+
+======================================================================
+FAIL: test_invalid_shapes_and_fields_are_not_500 (test_security.SecurityTest.test_invalid_shapes_and_fields_are_not_500) (path='/orders', body={'product': []})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 118, in test_invalid_shapes_and_fields_are_not_500
+    self.assertEqual(self.call('POST', path, body)[0], 400)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 500 != 400
+
+======================================================================
+FAIL: test_invalid_shapes_and_fields_are_not_500 (test_security.SecurityTest.test_invalid_shapes_and_fields_are_not_500) (path='/reviews', body={'product': 'chair', 'text': []})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 118, in test_invalid_shapes_and_fields_are_not_500
+    self.assertEqual(self.call('POST', path, body)[0], 400)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 201 != 400
+
+======================================================================
+FAIL: test_invalid_shapes_and_fields_are_not_500 (test_security.SecurityTest.test_invalid_shapes_and_fields_are_not_500) (path='/assistant/execute', body={'decision': 'bad'})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 118, in test_invalid_shapes_and_fields_are_not_500
+    self.assertEqual(self.call('POST', path, body)[0], 400)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 500 != 400
+
+======================================================================
+FAIL: test_invalid_shapes_and_fields_are_not_500 (test_security.SecurityTest.test_invalid_shapes_and_fields_are_not_500) (path='/assistant/execute', body={'decision': {'tool': 'read_file', 'arguments': []}})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 118, in test_invalid_shapes_and_fields_are_not_500
+    self.assertEqual(self.call('POST', path, body)[0], 400)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 500 != 400
+
+======================================================================
+FAIL: test_logs_privilege_and_secret_redaction (test_security.SecurityTest.test_logs_privilege_and_secret_redaction)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 97, in test_logs_privilege_and_secret_redaction
+    self.assertEqual(self.call('GET', '/debug/logs')[0], 403)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 200 != 403
+
+======================================================================
+FAIL: test_orders_owner (test_security.SecurityTest.test_orders_owner)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 31, in test_orders_owner
+    self.assertTrue(all(order['owner'] == 1 for order in orders))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_profile_owner (test_security.SecurityTest.test_profile_owner)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 25, in test_profile_owner
+    self.assertEqual(self.call('GET', '/profile?id=2')[0], 403)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 200 != 403
+
+======================================================================
+FAIL: test_receipt_authorization_and_internal_paths (test_security.SecurityTest.test_receipt_authorization_and_internal_paths) (path='/files?user=bob&path=receipt.txt')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 65, in test_receipt_authorization_and_internal_paths
+    self.assertEqual(self.call('GET', path)[0], 403)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 200 != 403
+
+======================================================================
+FAIL: test_receipt_authorization_and_internal_paths (test_security.SecurityTest.test_receipt_authorization_and_internal_paths) (path='/files?user=alice&path=..%2F..%2Fprivate%2Foperator-note.txt')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 65, in test_receipt_authorization_and_internal_paths
+    self.assertEqual(self.call('GET', path)[0], 403)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 200 != 403
+
+======================================================================
+FAIL: test_receipt_authorization_and_internal_paths (test_security.SecurityTest.test_receipt_authorization_and_internal_paths) (path='/files?user=..%2Fbob&path=receipt.txt')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 65, in test_receipt_authorization_and_internal_paths
+    self.assertEqual(self.call('GET', path)[0], 403)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 500 != 403
+
+======================================================================
+FAIL: test_receipt_authorization_and_internal_paths (test_security.SecurityTest.test_receipt_authorization_and_internal_paths)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 68, in test_receipt_authorization_and_internal_paths
+    self.assertIn('TEST_BOB', result['content'])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'TEST_BOB' not found in 'TEST_ALICE receipt: chair, 5000 RUB'
+
+======================================================================
+FAIL: test_review_html_is_escaped (test_security.SecurityTest.test_review_html_is_escaped)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 93, in test_review_html_is_escaped
+    self.assertIn(html.escape(XSS), markup)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '&lt;script&gt;window.__miniShopXss = 1&lt;/script&gt;' not found in '<html><body><p><script>window.__miniShopXss = 1</script></p></body></html>'
+
+======================================================================
+FAIL: test_search_customer_sees_only_self (test_security.SecurityTest.test_search_customer_sees_only_self)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 46, in test_search_customer_sees_only_self
+    self.assertEqual([row['id'] for row in rows], [1])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [1, 2] != [1]
+
+First list contains 1 additional elements.
+First extra element 1:
+2
+
+- [1, 2]
++ [1]
+
+======================================================================
+FAIL: test_search_parameterized_even_for_staff (test_security.SecurityTest.test_search_parameterized_even_for_staff)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 41, in test_search_parameterized_even_for_staff
+    self.assertEqual(rows, [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^
+AssertionError: Lists differ: [{'id': 1, 'name': 'TEST_ALICE', 'email': [141 chars]_B'}] != []
+
+First list contains 2 additional elements.
+First extra element 0:
+{'id': 1, 'name': 'TEST_ALICE', 'email': 'alice@example.invalid', 'address': 'TEST_ADDRESS_A'}
+
++ []
+- [{'address': 'TEST_ADDRESS_A',
+-   'email': 'alice@example.invalid',
+-   'id': 1,
+-   'name': 'TEST_ALICE'},
+-  {'address': 'TEST_ADDRESS_B',
+-   'email': 'bob@example.invalid',
+-   'id': 2,
+-   'name': 'TEST_BOB'}]
+
+======================================================================
+FAIL: test_sql_injection_ids_rejected (test_security.SecurityTest.test_sql_injection_ids_rejected) (path='/profile')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 36, in test_sql_injection_ids_rejected
+    self.assertEqual(self.call('GET', path + '?' + urlencode({key: '1 OR 1=1'}))[0], 400)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 200 != 400
+
+======================================================================
+FAIL: test_sql_injection_ids_rejected (test_security.SecurityTest.test_sql_injection_ids_rejected) (path='/assistant/context')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 36, in test_sql_injection_ids_rejected
+    self.assertEqual(self.call('GET', path + '?' + urlencode({key: '1 OR 1=1'}))[0], 400)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 200 != 400
+
+======================================================================
+FAIL: test_staff_privilege_comes_only_from_session (test_security.SecurityTest.test_staff_privilege_comes_only_from_session)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/lab/test_security.py", line 49, in test_staff_privilege_comes_only_from_session
+    self.assertEqual(self.call('GET', '/admin/export', user=None, headers={'X-Role': 'staff'})[0], 401)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 200 != 401
+
+----------------------------------------------------------------------
+Ran 17 tests in 1.481s
+
+FAILED (failures=37)
