@@ -1,0 +1,42 @@
+{
+  "timing": "Captured after the experiments",
+  "version": {
+    "version": "0.40.13"
+  },
+  "details": {
+    "parent_model": "",
+    "format": "gguf",
+    "family": "qwen35",
+    "families": [
+      "qwen35",
+      "clip"
+    ],
+    "parameter_size": "4.7B",
+    "quantization_level": "Q4_K_M",
+    "runner": "llamacpp"
+  },
+  "parameters": "temperature                    0.2\ntop_k                          20\ntop_p                          0.95\nnum_ctx                        65536\npresence_penalty               1.5\nseed                           42",
+  "loaded_models": [
+    {
+      "name": "itmo-agent:latest",
+      "model": "itmo-agent:latest",
+      "size": 5214704761,
+      "digest": "c754632bd6e918e904b5414f84ada63b2a81aa73e7fd182172a13c23fd35e828",
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "qwen35",
+        "families": [
+          "qwen35",
+          "clip"
+        ],
+        "parameter_size": "4.7B",
+        "quantization_level": "Q4_K_M"
+      },
+      "expires_at": "2026-11-02T11:23:42.5120703+03:00",
+      "size_vram": 5214704761,
+      "context_length": 65536,
+      "runner": "llamacpp"
+    }
+  ]
+}
