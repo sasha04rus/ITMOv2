@@ -72,7 +72,7 @@ E2E сам запускает отдельный сервер на свобод�
 | Другой SDD-фреймворк и сравнение | `FRAMEWORK.md`, `.specify/`, реальные CLI-результаты |
 | Две независимые спецификации до кода | `specs/before/ui.md`, `specs/before/logic.md` |
 | Согласование и версии после | `specs/coordination.md`, `specs/after/`, общий `contracts/http.md` |
-| Решение человека до реализации | `evidence/human-approval.json`, первый отдельный коммит спецификаций `684c057` |
+| Решение человека до реализации | `evidence/human-approval.json`, первый отдельный коммит спецификаций `e3c8190` |
 | Реализация и сквозные проверки | `app/`, `tests/`, `evidence/`, `REPORT.md` |
 | Рефлексия | `reflection.md` |
 
