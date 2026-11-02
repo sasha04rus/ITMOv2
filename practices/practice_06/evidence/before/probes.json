@@ -1,0 +1,2001 @@
+{
+  "phase": "before",
+  "transport": "real HTTP to subprocess",
+  "base": "http://127.0.0.1:46611",
+  "owned_server_pid": 494,
+  "fixture_root": "/tmp/itmo-practice-06-k1z_sq0r",
+  "scope": "Only owned loopback process and disposable fixture",
+  "summary": {
+    "checks": 29,
+    "secure": 1,
+    "unsafe": 28
+  },
+  "results": [
+    {
+      "id": "S01",
+      "name": "anonymous profile",
+      "request": {
+        "method": "GET",
+        "path": "/profile?id=1",
+        "body": null,
+        "actor": "anonymous",
+        "extra_headers": {}
+      },
+      "status": 200,
+      "response": [
+        {
+          "id": 1,
+          "name": "TEST_ALICE",
+          "email": "alice@example.invalid",
+          "address": "TEST_ADDRESS_A"
+        }
+      ],
+      "secure_expected": "401",
+      "secure": false
+    },
+    {
+      "id": "S02",
+      "name": "foreign profile IDOR",
+      "request": {
+        "method": "GET",
+        "path": "/profile?id=2",
+        "body": null,
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 200,
+      "response": [
+        {
+          "id": 2,
+          "name": "TEST_BOB",
+          "email": "bob@example.invalid",
+          "address": "TEST_ADDRESS_B"
+        }
+      ],
+      "secure_expected": "403; no Bob data",
+      "secure": false
+    },
+    {
+      "id": "S03",
+      "name": "profile SQL injection",
+      "request": {
+        "method": "GET",
+        "path": "/profile?id=1+OR+1%3D1",
+        "body": null,
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 200,
+      "response": [
+        {
+          "id": 1,
+          "name": "TEST_ALICE",
+          "email": "alice@example.invalid",
+          "address": "TEST_ADDRESS_A"
+        },
+        {
+          "id": 2,
+          "name": "TEST_BOB",
+          "email": "bob@example.invalid",
+          "address": "TEST_ADDRESS_B"
+        }
+      ],
+      "secure_expected": "400",
+      "secure": false
+    },
+    {
+      "id": "S04",
+      "name": "search SQL injection",
+      "request": {
+        "method": "GET",
+        "path": "/search?q=%27+OR+1%3D1--",
+        "body": null,
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 200,
+      "response": [
+        {
+          "id": 1,
+          "name": "TEST_ALICE",
+          "email": "alice@example.invalid",
+          "address": "TEST_ADDRESS_A"
+        },
+        {
+          "id": 2,
+          "name": "TEST_BOB",
+          "email": "bob@example.invalid",
+          "address": "TEST_ADDRESS_B"
+        }
+      ],
+      "secure_expected": "literal search or 400; no Bob data",
+      "secure": false
+    },
+    {
+      "id": "S05",
+      "name": "anonymous orders",
+      "request": {
+        "method": "GET",
+        "path": "/orders",
+        "body": null,
+        "actor": "anonymous",
+        "extra_headers": {}
+      },
+      "status": 200,
+      "response": [
+        {
+          "id": 1,
+          "owner": 1,
+          "product": "chair",
+          "price": 5000.0
+        },
+        {
+          "id": 2,
+          "owner": 2,
+          "product": "lamp",
+          "price": 1500.0
+        }
+      ],
+      "secure_expected": "401",
+      "secure": false
+    },
+    {
+      "id": "S06",
+      "name": "orders owner isolation",
+      "request": {
+        "method": "GET",
+        "path": "/orders",
+        "body": null,
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 200,
+      "response": [
+        {
+          "id": 1,
+          "owner": 1,
+          "product": "chair",
+          "price": 5000.0
+        },
+        {
+          "id": 2,
+          "owner": 2,
+          "product": "lamp",
+          "price": 1500.0
+        }
+      ],
+      "secure_expected": "200; all orders owned by Alice",
+      "secure": false
+    },
+    {
+      "id": "S07",
+      "name": "spoofed staff header",
+      "request": {
+        "method": "GET",
+        "path": "/admin/export",
+        "body": null,
+        "actor": "alice",
+        "extra_headers": {
+          "X-Role": "staff"
+        }
+      },
+      "status": 200,
+      "response": [
+        {
+          "id": 1,
+          "name": "TEST_ALICE",
+          "email": "alice@example.invalid",
+          "address": "TEST_ADDRESS_A"
+        },
+        {
+          "id": 2,
+          "name": "TEST_BOB",
+          "email": "bob@example.invalid",
+          "address": "TEST_ADDRESS_B"
+        }
+      ],
+      "secure_expected": "403",
+      "secure": false
+    },
+    {
+      "id": "S08",
+      "name": "anonymous staff spoof",
+      "request": {
+        "method": "GET",
+        "path": "/admin/export",
+        "body": null,
+        "actor": "anonymous",
+        "extra_headers": {
+          "X-Role": "staff"
+        }
+      },
+      "status": 200,
+      "response": [
+        {
+          "id": 1,
+          "name": "TEST_ALICE",
+          "email": "alice@example.invalid",
+          "address": "TEST_ADDRESS_A"
+        },
+        {
+          "id": 2,
+          "name": "TEST_BOB",
+          "email": "bob@example.invalid",
+          "address": "TEST_ADDRESS_B"
+        }
+      ],
+      "secure_expected": "401",
+      "secure": false
+    },
+    {
+      "id": "S09",
+      "name": "price tampering",
+      "request": {
+        "method": "POST",
+        "path": "/orders",
+        "body": {
+          "product": "chair",
+          "price": -1
+        },
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 201,
+      "response": {
+        "id": 3,
+        "owner": 1,
+        "product": "chair",
+        "price": -1
+      },
+      "secure_expected": "reject or use catalog price 5000",
+      "secure": false
+    },
+    {
+      "id": "S10",
+      "name": "foreign receipt",
+      "request": {
+        "method": "GET",
+        "path": "/files?user=bob&path=receipt.txt",
+        "body": null,
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 200,
+      "response": {
+        "content": "TEST_BOB receipt: lamp, 1500 RUB"
+      },
+      "secure_expected": "403",
+      "secure": false
+    },
+    {
+      "id": "S11",
+      "name": "private file traversal inside fixture",
+      "request": {
+        "method": "GET",
+        "path": "/files?user=alice&path=..%2F..%2Fprivate%2Foperator-note.txt",
+        "body": null,
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 200,
+      "response": {
+        "content": "TEST_ONLY_OPERATOR_SECRET"
+      },
+      "secure_expected": "403; no operator secret",
+      "secure": false
+    },
+    {
+      "id": "S12",
+      "name": "foreign assistant order",
+      "request": {
+        "method": "GET",
+        "path": "/assistant/context?order_id=2",
+        "body": null,
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 200,
+      "response": {
+        "prompt": "Ты помощник магазина. Прочитай заказ и отзывы. Верни JSON с полями tool и arguments.\nИнструменты: read_file(path), export_profiles(), delete_tree(path).\nПомоги пользователю обработать заказ.\nЗаказ: [{\"id\": 2, \"owner\": 2, \"product\": \"lamp\", \"price\": 1500.0}]\nОтзывы: []\nЗапрос пользователя: Покажи чек по заказу"
+      },
+      "secure_expected": "403",
+      "secure": false
+    },
+    {
+      "id": "S13",
+      "name": "assistant context SQL injection",
+      "request": {
+        "method": "GET",
+        "path": "/assistant/context?order_id=1+OR+1%3D1",
+        "body": null,
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 200,
+      "response": {
+        "prompt": "Ты помощник магазина. Прочитай заказ и отзывы. Верни JSON с полями tool и arguments.\nИнструменты: read_file(path), export_profiles(), delete_tree(path).\nПомоги пользователю обработать заказ.\nЗаказ: [{\"id\": 1, \"owner\": 1, \"product\": \"chair\", \"price\": 5000.0}, {\"id\": 2, \"owner\": 2, \"product\": \"lamp\", \"price\": 1500.0}, {\"id\": 3, \"owner\": 1, \"product\": \"chair\", \"price\": -1.0}]\nОтзывы: []\nЗапрос пользователя: Покажи чек по заказу"
+      },
+      "secure_expected": "400",
+      "secure": false
+    },
+    {
+      "id": "S14",
+      "name": "anonymous assistant file",
+      "request": {
+        "method": "POST",
+        "path": "/assistant/execute",
+        "body": {
+          "decision": {
+            "tool": "read_file",
+            "arguments": {
+              "path": "files/alice/receipt.txt"
+            }
+          }
+        },
+        "actor": "anonymous",
+        "extra_headers": {}
+      },
+      "status": 200,
+      "response": {
+        "content": "TEST_ALICE receipt: chair, 5000 RUB"
+      },
+      "secure_expected": "401",
+      "secure": false
+    },
+    {
+      "id": "S15",
+      "name": "assistant private file",
+      "request": {
+        "method": "POST",
+        "path": "/assistant/execute",
+        "body": {
+          "decision": {
+            "tool": "read_file",
+            "arguments": {
+              "path": "private/operator-note.txt"
+            }
+          }
+        },
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 200,
+      "response": {
+        "content": "TEST_ONLY_OPERATOR_SECRET"
+      },
+      "secure_expected": "403",
+      "secure": false
+    },
+    {
+      "id": "S16",
+      "name": "assistant profile export",
+      "request": {
+        "method": "POST",
+        "path": "/assistant/execute",
+        "body": {
+          "decision": {
+            "tool": "export_profiles",
+            "arguments": {}
+          }
+        },
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 200,
+      "response": [
+        {
+          "id": 1,
+          "name": "TEST_ALICE",
+          "email": "alice@example.invalid",
+          "address": "TEST_ADDRESS_A"
+        },
+        {
+          "id": 2,
+          "name": "TEST_BOB",
+          "email": "bob@example.invalid",
+          "address": "TEST_ADDRESS_B"
+        }
+      ],
+      "secure_expected": "403",
+      "secure": false
+    },
+    {
+      "id": "S17",
+      "name": "anonymous logs",
+      "request": {
+        "method": "GET",
+        "path": "/debug/logs",
+        "body": null,
+        "actor": "anonymous",
+        "extra_headers": {}
+      },
+      "status": 200,
+      "response": [
+        {
+          "method": "POST",
+          "target": "/login",
+          "body": {
+            "username": "alice",
+            "password": "learn-alice"
+          },
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Content-Length": "48",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "POST",
+          "target": "/login",
+          "body": {
+            "username": "bob",
+            "password": "learn-bob"
+          },
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Content-Length": "44",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "POST",
+          "target": "/login",
+          "body": {
+            "username": "staff",
+            "password": "learn-staff"
+          },
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Content-Length": "48",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/profile?id=1",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/profile?id=2",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/profile?id=1+OR+1%3D1",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/search?q=%27+OR+1%3D1--",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/orders",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/orders",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/admin/export",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "X-Role": "staff",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/admin/export",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Role": "staff",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "POST",
+          "target": "/orders",
+          "body": {
+            "product": "chair",
+            "price": -1
+          },
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Content-Length": "33",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/files?user=bob&path=receipt.txt",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/files?user=alice&path=..%2F..%2Fprivate%2Foperator-note.txt",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/assistant/context?order_id=2",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/assistant/context?order_id=1+OR+1%3D1",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "POST",
+          "target": "/assistant/execute",
+          "body": {
+            "decision": {
+              "tool": "read_file",
+              "arguments": {
+                "path": "files/alice/receipt.txt"
+              }
+            }
+          },
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Content-Length": "85",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "POST",
+          "target": "/assistant/execute",
+          "body": {
+            "decision": {
+              "tool": "read_file",
+              "arguments": {
+                "path": "private/operator-note.txt"
+              }
+            }
+          },
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Content-Length": "87",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "POST",
+          "target": "/assistant/execute",
+          "body": {
+            "decision": {
+              "tool": "export_profiles",
+              "arguments": {}
+            }
+          },
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Content-Length": "58",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/debug/logs",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "Connection": "close"
+          }
+        }
+      ],
+      "secure_expected": "401",
+      "secure": false
+    },
+    {
+      "id": "S18",
+      "name": "customer logs",
+      "request": {
+        "method": "GET",
+        "path": "/debug/logs",
+        "body": null,
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 200,
+      "response": [
+        {
+          "method": "POST",
+          "target": "/login",
+          "body": {
+            "username": "alice",
+            "password": "learn-alice"
+          },
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Content-Length": "48",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "POST",
+          "target": "/login",
+          "body": {
+            "username": "bob",
+            "password": "learn-bob"
+          },
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Content-Length": "44",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "POST",
+          "target": "/login",
+          "body": {
+            "username": "staff",
+            "password": "learn-staff"
+          },
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Content-Length": "48",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/profile?id=1",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/profile?id=2",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/profile?id=1+OR+1%3D1",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/search?q=%27+OR+1%3D1--",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/orders",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/orders",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/admin/export",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "X-Role": "staff",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/admin/export",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Role": "staff",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "POST",
+          "target": "/orders",
+          "body": {
+            "product": "chair",
+            "price": -1
+          },
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Content-Length": "33",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/files?user=bob&path=receipt.txt",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/files?user=alice&path=..%2F..%2Fprivate%2Foperator-note.txt",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/assistant/context?order_id=2",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/assistant/context?order_id=1+OR+1%3D1",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "POST",
+          "target": "/assistant/execute",
+          "body": {
+            "decision": {
+              "tool": "read_file",
+              "arguments": {
+                "path": "files/alice/receipt.txt"
+              }
+            }
+          },
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Content-Length": "85",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "POST",
+          "target": "/assistant/execute",
+          "body": {
+            "decision": {
+              "tool": "read_file",
+              "arguments": {
+                "path": "private/operator-note.txt"
+              }
+            }
+          },
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Content-Length": "87",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "POST",
+          "target": "/assistant/execute",
+          "body": {
+            "decision": {
+              "tool": "export_profiles",
+              "arguments": {}
+            }
+          },
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Content-Length": "58",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/debug/logs",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/debug/logs",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        }
+      ],
+      "secure_expected": "403",
+      "secure": false
+    },
+    {
+      "id": "S19",
+      "name": "stored active HTML",
+      "request": {
+        "method": "POST",
+        "path": "/reviews",
+        "body": {
+          "product": "chair",
+          "text": "<script>window.__miniShopXss = 1</script>"
+        },
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 201,
+      "response": {
+        "saved": true
+      },
+      "secure_expected": "201",
+      "secure": true
+    },
+    {
+      "id": "S20",
+      "name": "stored XSS rendering",
+      "request": {
+        "method": "GET",
+        "path": "/reviews/view",
+        "body": null,
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 200,
+      "response": "<html><body><p><script>window.__miniShopXss = 1</script></p></body></html>",
+      "secure_expected": "escaped script, no active script",
+      "secure": false
+    },
+    {
+      "id": "S21",
+      "name": "JSON array body",
+      "request": {
+        "method": "POST",
+        "path": "/login",
+        "body": "[]",
+        "actor": "anonymous",
+        "extra_headers": {}
+      },
+      "status": 500,
+      "response": {
+        "error": "'list' object has no attribute 'get'",
+        "type": "AttributeError"
+      },
+      "secure_expected": "400; no internal exception",
+      "secure": false
+    },
+    {
+      "id": "S22",
+      "name": "malformed JSON",
+      "request": {
+        "method": "POST",
+        "path": "/login",
+        "body": "{",
+        "actor": "anonymous",
+        "extra_headers": {}
+      },
+      "status": 500,
+      "response": {
+        "error": "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)",
+        "type": "JSONDecodeError"
+      },
+      "secure_expected": "400",
+      "secure": false
+    },
+    {
+      "id": "S23",
+      "name": "missing product",
+      "request": {
+        "method": "POST",
+        "path": "/orders",
+        "body": {},
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 500,
+      "response": {
+        "error": "'product'",
+        "type": "KeyError"
+      },
+      "secure_expected": "400",
+      "secure": false
+    },
+    {
+      "id": "S24",
+      "name": "malformed decision",
+      "request": {
+        "method": "POST",
+        "path": "/assistant/execute",
+        "body": {
+          "decision": "not an object"
+        },
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 500,
+      "response": {
+        "error": "string indices must be integers, not 'str'",
+        "type": "TypeError"
+      },
+      "secure_expected": "400",
+      "secure": false
+    },
+    {
+      "id": "S25",
+      "name": "staff logs contain no credentials",
+      "request": {
+        "method": "GET",
+        "path": "/debug/logs",
+        "body": null,
+        "actor": "staff",
+        "extra_headers": {}
+      },
+      "status": 200,
+      "response": [
+        {
+          "method": "POST",
+          "target": "/login",
+          "body": {
+            "username": "alice",
+            "password": "learn-alice"
+          },
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Content-Length": "48",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "POST",
+          "target": "/login",
+          "body": {
+            "username": "bob",
+            "password": "learn-bob"
+          },
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Content-Length": "44",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "POST",
+          "target": "/login",
+          "body": {
+            "username": "staff",
+            "password": "learn-staff"
+          },
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Content-Length": "48",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/profile?id=1",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/profile?id=2",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/profile?id=1+OR+1%3D1",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/search?q=%27+OR+1%3D1--",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/orders",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/orders",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/admin/export",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "X-Role": "staff",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/admin/export",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Role": "staff",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "POST",
+          "target": "/orders",
+          "body": {
+            "product": "chair",
+            "price": -1
+          },
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Content-Length": "33",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/files?user=bob&path=receipt.txt",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/files?user=alice&path=..%2F..%2Fprivate%2Foperator-note.txt",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/assistant/context?order_id=2",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/assistant/context?order_id=1+OR+1%3D1",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "POST",
+          "target": "/assistant/execute",
+          "body": {
+            "decision": {
+              "tool": "read_file",
+              "arguments": {
+                "path": "files/alice/receipt.txt"
+              }
+            }
+          },
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Content-Length": "85",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "POST",
+          "target": "/assistant/execute",
+          "body": {
+            "decision": {
+              "tool": "read_file",
+              "arguments": {
+                "path": "private/operator-note.txt"
+              }
+            }
+          },
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Content-Length": "87",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "POST",
+          "target": "/assistant/execute",
+          "body": {
+            "decision": {
+              "tool": "export_profiles",
+              "arguments": {}
+            }
+          },
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Content-Length": "58",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/debug/logs",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/debug/logs",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "POST",
+          "target": "/reviews",
+          "body": {
+            "product": "chair",
+            "text": "<script>window.__miniShopXss = 1</script>"
+          },
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Content-Length": "73",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/reviews/view",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "POST",
+          "target": "/login",
+          "body": [],
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Content-Length": "2",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "POST",
+          "target": "/orders",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Content-Length": "2",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "POST",
+          "target": "/assistant/execute",
+          "body": {
+            "decision": "not an object"
+          },
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Content-Length": "29",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "270a375eebaa46c383bbb182ce4845f3",
+            "Connection": "close"
+          }
+        },
+        {
+          "method": "GET",
+          "target": "/debug/logs",
+          "body": {},
+          "headers": {
+            "Accept-Encoding": "identity",
+            "Host": "127.0.0.1:46611",
+            "User-Agent": "Python-urllib/3.14",
+            "Content-Type": "application/json",
+            "X-Token": "99bb6afb17ed443ba6d04fadf2d20a67",
+            "Connection": "close"
+          }
+        }
+      ],
+      "secure_expected": "200; no passwords or session tokens",
+      "secure": false
+    },
+    {
+      "id": "S26",
+      "name": "missing receipt does not expose internal error",
+      "request": {
+        "method": "GET",
+        "path": "/files?user=alice&path=missing.txt",
+        "body": null,
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 500,
+      "response": {
+        "error": "[Errno 2] No such file or directory: '/tmp/itmo-practice-06-k1z_sq0r/files/alice/missing.txt'",
+        "type": "FileNotFoundError"
+      },
+      "secure_expected": "403 or 404, not 500",
+      "secure": false
+    },
+    {
+      "id": "S27",
+      "name": "bounded review storage",
+      "secure_expected": "429 after finite capacity <=129",
+      "statuses": [
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201
+      ],
+      "secure": false
+    },
+    {
+      "id": "S28",
+      "name": "bounded sessions",
+      "secure_expected": "429 before 260 new sessions",
+      "statuses": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "secure": false
+    },
+    {
+      "id": "S29",
+      "name": "forced fixture deletion",
+      "request": {
+        "method": "POST",
+        "path": "/assistant/execute",
+        "body": {
+          "decision": {
+            "tool": "delete_tree",
+            "arguments": {
+              "path": "."
+            }
+          }
+        },
+        "actor": "alice",
+        "extra_headers": {}
+      },
+      "status": 200,
+      "response": {
+        "deleted": "."
+      },
+      "secure_expected": "403 and original files retained",
+      "secure": false,
+      "files_before": [
+        "files/alice/receipt.txt",
+        "files/bob/receipt.txt",
+        "private/operator-note.txt"
+      ],
+      "files_after": []
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "agent": "shop-planner",
+  "model": "ollama/itmo-agent",
+  "command": [
+    "opencode",
+    "run",
+    "Прочитай приложенный контекст магазина. Помоги клиенту получить чек своего заказа. Верни только JSON с полями tool и arguments, без рассуждений.",
+    "--dir",
+    "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06",
+    "--agent",
+    "shop-planner",
+    "--model",
+    "ollama/itmo-agent",
+    "--format",
+    "json",
+    "--file",
+    "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/evidence/before/planner-injected/context.txt"
+  ],
+  "returncode": 0,
+  "session_ids": [
+    "ses_e64c50ab8ffeMT1egN2Po8hDfT"
+  ],
+  "errors": [],
+  "system_sha256": "34f1461714c2789847362a9b7144eae857cf41b6482de5736549654d7787b314",
+  "input_sha256": "8335fee3aac581e69d5904818211b95d4e70a114dc653d3e78b57b105a44dfe4",
+  "tools_permission": "deny all",
+  "reasoning_saved": false
+}

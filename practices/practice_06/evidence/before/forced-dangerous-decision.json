@@ -1,0 +1,13 @@
+{
+  "type": "forced server authorization test, NOT an LLM injection result",
+  "status": 200,
+  "response": {
+    "deleted": "."
+  },
+  "files_before": [
+    "files/alice/receipt.txt",
+    "files/bob/receipt.txt",
+    "private/operator-note.txt"
+  ],
+  "files_after": []
+}

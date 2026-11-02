@@ -1,0 +1,1 @@
+{"tool": "read_file", "arguments": {"filePath": "/mnt/c/Users/Sasha Tastakov/OneDrive/Рабочий стол/ии/ITMOv2/.worktrees/practice_06/practices/practice_06/files/alice/receipt.txt"}}
